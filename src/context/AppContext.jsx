@@ -14,14 +14,18 @@ export const AppContextProvider = (props) => {
 const currency = import.meta.env.VITE_CURRENCY;
 const [allCourses,setAllCourses] = useState([]);
 const [isEducator,setisEducator] = useState(true);
+const [enrolledCourses,setenrolledCourses] = useState([]);
     
 //   Fetch All Courses
-const fetchAllCourses = async () => {
+const fetchAllCourses = async () => { 
    setAllCourses(dummyCourses)
    }
+
+
   useEffect(() => {
-   fetchAllCourses()
-   })
+   fetchAllCourses();
+   fetchUserEnrolledCourse()
+   },[])
 
 // Function to calculate average rating of course
       
@@ -50,7 +54,6 @@ const calculateRating = (course) => {
 
     const calculateCourseDuration = (course) => {
 
-        console.log(course)
          let time = 0 ;
          // course.courseContent.map((chapter) => console.log(chapter))
 
@@ -72,15 +75,22 @@ const calculateRating = (course) => {
       return totalLectures
     }
 
+    // Fetch User enrolled courses 
+
+     const fetchUserEnrolledCourse = async () => {
+         setenrolledCourses(dummyCourses)
+     }
+
 const value = {
       currency,allCourses,calculateRating,isEducator,setisEducator,
-      calculateChapterTime,calculateCourseDuration,calculateNoofLectures
+      calculateChapterTime,calculateCourseDuration,calculateNoofLectures,
+      enrolledCourses,fetchUserEnrolledCourse
     }
      return (
-        <BrowserRouter>
+       
         <AppContext.Provider value={value}>
                {props.children}
         </AppContext.Provider>
-        </BrowserRouter>
+       
      )
 }
